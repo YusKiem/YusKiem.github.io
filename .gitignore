@@ -7,3 +7,5 @@
 *.sql
 *.o
 *.so
+node_modules
+node_modules

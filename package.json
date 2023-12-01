@@ -1,13 +1,14 @@
 {
+  "homepage": "https://yuskiem.github.io/yuskiem.github.io",
   "name": "yuskiem.github.io",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://github.com/YusKiem/yuskiem.github.io",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d deploy",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -16,7 +17,6 @@
     "@react-three/drei": "^9.88.17",
     "@react-three/fiber": "^8.15.11",
     "framer-motion": "^10.16.5",
-    "gh-pages": "^6.1.0",
     "maath": "^0.10.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -34,6 +34,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "gh-pages": "^6.1.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "vite": "^5.0.0"

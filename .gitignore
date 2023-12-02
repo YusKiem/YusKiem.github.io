@@ -9,3 +9,4 @@
 *.so
 node_modules
 node_modules
+remove.cjs

@@ -1,8 +1,79 @@
 import { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
-
 import CanvasLoader from "../Loader";
+import * as THREE from "three";
+// import ThreeScene from "../ThreeScene";
+
+const ThreeScene = () => {
+  const { scene, gl, camera } = useThree(); // Access the shared WebGL context
+
+  // La forme de l'objet
+  const geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
+  // Creation de l'objet
+  const material = new THREE.MeshNormalMaterial();
+  const box = new THREE.Mesh(geometry, material);
+  box.rotation.x = 0.5;
+  box.rotation.y = 1;
+  box.rotation.z = 1.5;
+  box.position.z = -5;
+  scene.add(box); // Add the box to the shared scene
+
+  // Animation function
+  const animate = () => {
+    requestAnimationFrame(animate);
+    box.rotation.x += 0.005;
+    box.rotation.y += 0.01;
+    box.rotation.z += 0.02;
+    gl.render(scene, camera); // Render using the shared scene and camera
+  };
+
+  // Start animation
+  animate();
+
+  // Cleanup function
+  // return () => {
+  //   scene.remove(box); // Remove the box from the scene on cleanup
+  // };
+};
+
+// const ThreeScene = () => {
+//   const { scene, gl, camera } = useThree();
+
+//   // Define the box geometry and material outside of the animate function
+//   const geometry = new THREE.BoxGeometry(0.25, 0.25, 0.25);
+//   const material = new THREE.MeshNormalMaterial();
+//   const box = new THREE.Mesh(geometry, material);
+
+//   // Set initial rotation and position
+//   box.rotation.set(0.5, 1, 1.5);
+//   box.position.z = -5;
+
+//   // Add the box to the scene
+//   scene.add(box);
+
+//   // Define the animation function
+//   const animate = () => {
+//     // Update the box rotation
+//     box.rotation.x += 0.005;
+//     box.rotation.y += 0.01;
+//     box.rotation.z += 0.02;
+
+//     // Render the scene
+//     gl.render(scene, camera);
+
+//     // Request the next animation frame
+//     requestAnimationFrame(animate);
+//   };
+
+//   // Start the animation
+//   requestAnimationFrame(animate);
+
+//   // Cleanup function to remove the box from the scene
+//   return () => {
+//     scene.remove(box);
+//   };
+// };
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./desktop_pc/scene.gltf");
@@ -25,6 +96,12 @@ const Computers = ({ isMobile }) => {
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
+      {/* <primitive
+        object={ThreeScene.scene}
+        scale={isMobile ? 0.7 : 0.75}
+        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
+        rotation={[-0.01, -0.2, -0.1]}
+      /> */}
     </mesh>
   );
 };
@@ -57,10 +134,11 @@ const ComputersCanvas = () => {
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-          enableZoom={false}
+          enableZoom={true}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
+        <ThreeScene isMobile={isMobile} />
         <Computers isMobile={isMobile} />
       </Suspense>
 
